@@ -37,11 +37,11 @@ function set(iterable) {
 		}
 	})
 
-    'has values'.split(' ').forEach(function (method) {
-        set[method] = function () {
-            return st[method].apply(st, arguments)
-        }
-    })
+	'has values'.split(' ').forEach(function (method) {
+		set[method] = function () {
+			return st[method].apply(st, arguments)
+		}
+	})
 
 	util.extend(set, EventEmitter.prototype)
 	return set
