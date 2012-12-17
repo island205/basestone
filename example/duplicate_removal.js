@@ -5,7 +5,7 @@ singleList = set()
 
 // or just use `singleList = set(duplicateList)`
 for (var i = 0, len = duplicateList.length; i < len; i++) {
-	singleList.add(duplicateList[i])
+    singleList.add(duplicateList[i])
 }
 
 // out:[ 7, 10, 2, 0, 8, 13, 1, 9, 3, 4, 5, 12, 6, 14, 11, 42, 24, 38, 20, 25, 39, 37, 44, 27, 30, 36, 48, 41, 28, 15, 19, 34, 31, 43, 35, 23, 29, 32, 45, 47, 22, 17, 33, 26, 46 ]
