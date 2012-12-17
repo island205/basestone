@@ -1,5 +1,5 @@
 var
-EventEmitter = require('event').EventEmitter,
+EventEmitter = require('./emitter').EventEmitter,
 Map = require('./structure/map').Map,
 util = require('./util').util,
 

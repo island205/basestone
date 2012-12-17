@@ -1,5 +1,5 @@
 var
-util = require('../util')
+util = require('../util').util
 
 function Map(iterable) {
 	iterable = iterable || []
