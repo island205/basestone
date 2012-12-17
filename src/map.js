@@ -1,9 +1,8 @@
 var
 EventEmitter = require('./emitter').EventEmitter,
 Map = require('./structure/map').Map,
-util = require('./util').util,
+util = require('./util').util
 
-UPDATE_METHOD = 'set remove'.split(' ')
 
 function map(iterable) {
 	var
@@ -34,15 +33,18 @@ function map(iterable) {
 		}
 	}
 
-	'get set has remove items keys values'.split(' ').forEach(function (method) {
+	'set remove'.split(' ').forEach(function (method) {
 		map[method] = function () {
 			mp[method].apply(mp, arguments)
-			if (UPDATE_METHOD.indexOf(method) > - 1) {
-				map.emit('update', mp)
-			}
+			map.emit('update', mp)
 			return mp
 		}
 	})
+    'get has items keys values'.split(' ').forEach(function (method) {
+        map[method] = function () {
+            return mp[method].apply(mp, arguments)
+        }
+    })
     util.extend(map, EventEmitter.prototype)
 	return map
 }

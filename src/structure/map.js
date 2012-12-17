@@ -50,11 +50,17 @@ util.extend(Map.prototype, {
 	},
 	keys: function (iterator) {
 		var keys = this._keys
+        if (typeof iterator === 'undefined') {
+            return util.clone(keys)
+        }
 		for (var i = 0; i < keys.length; i++) {
 			iterator(keys[i])
 		}
 	},
 	values: function (iterator) {
+        if (typeof iterator === 'undefined') {
+            return util.clone(this._vals)
+        }
 		for (var i = 0; i < this._keys.length; i++) {
 			iterator(this._vals[i])
 		}
