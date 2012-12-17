@@ -11,7 +11,7 @@ function extend(target, source) {
 }
 
 extend(util, {
-	extend: extend,
+    extend: extend,
     clone: function (obj) {
         if (typeof obj !== 'object') {
             return obj

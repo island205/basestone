@@ -16,7 +16,7 @@ util.extend(Map.prototype, {
 	get: function (key) {
 		var i
 		i = this._keys.indexOf(key)
-		return i < 0 ? undefined : this._vals[i]
+		return i < 0 ? undefined: this._vals[i]
 	},
 	has: function (key) {
 		return this._keys.indexOf(key) >= 0
@@ -50,17 +50,17 @@ util.extend(Map.prototype, {
 	},
 	keys: function (iterator) {
 		var keys = this._keys
-        if (typeof iterator === 'undefined') {
-            return util.clone(keys)
-        }
+		if (typeof iterator === 'undefined') {
+			return util.clone(keys)
+		}
 		for (var i = 0; i < keys.length; i++) {
 			iterator(keys[i])
 		}
 	},
 	values: function (iterator) {
-        if (typeof iterator === 'undefined') {
-            return util.clone(this._vals)
-        }
+		if (typeof iterator === 'undefined') {
+			return util.clone(this._vals)
+		}
 		for (var i = 0; i < this._keys.length; i++) {
 			iterator(this._vals[i])
 		}

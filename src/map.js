@@ -3,7 +3,6 @@ EventEmitter = require('./emitter').EventEmitter,
 Map = require('./structure/map').Map,
 util = require('./util').util
 
-
 function map(iterable) {
 	var
 	mp = new Map(iterable)
@@ -40,12 +39,13 @@ function map(iterable) {
 			return mp
 		}
 	})
-    'get has items keys values'.split(' ').forEach(function (method) {
-        map[method] = function () {
-            return mp[method].apply(mp, arguments)
-        }
-    })
-    util.extend(map, EventEmitter.prototype)
+
+	'get has items keys values'.split(' ').forEach(function (method) {
+		map[method] = function () {
+			return mp[method].apply(mp, arguments)
+		}
+	})
+	util.extend(map, EventEmitter.prototype)
 	return map
 }
 
