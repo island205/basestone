@@ -3,44 +3,43 @@ EventEmitter = require('./emitter').EventEmitter,
 util = require('./util').util
 
 function array(arr) {
-	var
-	_arr = arr || []
+	arr = arr || []
 
-	function _array(arr) {
+	function array(arr) {
 		if (typeof arr !== 'undefined') {
-			_arr = arr
-			_array.emit('reset', _arr)
+			arr = arr
+			array.emit('reset', arr)
 			return
 		}
 	}
 
-	util.extend(_array, {
+	util.extend(array, {
 		pop: function () {
 			var
-			item = _arr.pop()
-			_array.emit('pop', item, _arr)
+			item = arr.pop()
+			array.emit('pop', item, arr)
 			return item
 		},
 		push: function () {
 			var
 			args = util.makeArray(arguments)
-			Array.prototype.push.apply(_arr, args)
-			_array.emit('push', args, _arr)
-            _array.emit.apply(_array, ['push'].concat(args.push(_arr)).concat([_arr]))
-			return _array.length
+			Array.prototype.push.apply(arr, args)
+			array.emit('push', args, arr)
+            array.emit.apply(array, ['push'].concat(args.push(arr)).concat([arr]))
+			return array.length
 		}
 	})
 
 	'sort reverse'.split(' ').forEach(function (method) {
-		_array[method] = function () {
-			Array.prototype[method].apply(_arr, arguments)
-			_array.emit(method, _arr)
-			return _arr
+		array[method] = function () {
+			Array.prototype[method].apply(arr, arguments)
+			array.emit(method, arr)
+			return arr
 		}
 	})
 
-	util.extend(_array, EventEmitter.prototype)
-	return _array
+	util.extend(array, EventEmitter.prototype)
+	return array
 
 }
 exports.array = array
