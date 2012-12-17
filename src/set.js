@@ -28,7 +28,7 @@ function set(iterable) {
 		}
 	}
 
-	'add has remove values'.split(' ').forEach(function (method) {
+	'add remove'.split(' ').forEach(function (method) {
 		set[method] = function () {
 			st[method].apply(st, arguments)
 			if (UPDATE_METHOD.indexOf(method) > - 1) {
@@ -36,6 +36,12 @@ function set(iterable) {
 			}
 		}
 	})
+
+    'has values'.split(' ').forEach(function (method) {
+        set[method] = function () {
+            return st[method].apply(st, arguments)
+        }
+    })
 
 	util.extend(set, EventEmitter.prototype)
 	return set

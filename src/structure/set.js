@@ -1,5 +1,5 @@
 var
-util = require('../util'),
+util = require('../util').util,
 Map = require('./map').Map
 
 function Set(iterable) {
@@ -22,8 +22,8 @@ util.extend(Set.prototype, {
 	remove: function (key) {
 		return this._map.remove(key)
 	},
-	values: function (iterator) {
-		this._map.keys(iterator)
+	values: function () {
+		return this._map.keys.apply(this._map, arguments)
 	}
 })
 
