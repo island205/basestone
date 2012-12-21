@@ -2,25 +2,32 @@ var
 map = require('../src/map').map,
 fs = require('fs')
 
-files = map([['../src/emitter.js', false], ['../src/util.js', false], ['../src/value.js', false]])
-
-files.on('update', function () {
-    var
-    finished = this.values().every(function (data) {
-        return data !== false
+function combine(files, callback) {
+    files = files.map(function (file) {
+        return [file.file, false]
     })
+    files = map(files)
 
-    if (finished) {
-        console.log(this.values().join(''))
-    }
-})
+    files.on('update', function () {
+        var
+        finished = this.values().every(function (data) {
+            return data !== false
+        })
 
-files.keys(function (file) {
-    fs.readFile(file, 'utf8', function (err, data) {
-        if (err) {
-            throw err
+        if (finished) {
+            callback(this.values().join(''))
         }
-        files.set(file, data)
     })
-})
+
+    files.keys(function (file) {
+        fs.readFile(file, 'utf8', function (err, data) {
+            if (err) {
+                throw err
+            }
+            files.set(file, data)
+        })
+    })
+}
+
+exports.combine = combine
 

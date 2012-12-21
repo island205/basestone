@@ -27,7 +27,7 @@ extend(util, {
     isArray: function (obj) {
         return __toString.call(obj) === '[object Array]'
     },
-    makeArray: function (o) {
+    arrayify: function (o) {
         return __slice.call(o)
     }
 })

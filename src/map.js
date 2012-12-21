@@ -8,7 +8,7 @@ function map(iterable) {
     mp = new Map(iterable)
     function map(key, value) {
         var
-        type, len = util.makeArray(arguments).length,
+        type, len = util.arrayify(arguments).length,
         iterable
         type = typeof key
         if (len === 0) {

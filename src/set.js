@@ -11,7 +11,7 @@ function set(iterable) {
     function set(key) {
         var
         len, type, iterable
-        len = util.makeArray(arguments).length
+        len = util.arrayify(arguments).length
         type = typeof key
 
         if (len === 0) {

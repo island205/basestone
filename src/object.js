@@ -8,7 +8,7 @@ function object(obj) {
     function object(key, value) {
 
         var
-        type, len = util.makeArray(arguments).length
+        type, len = util.arrayify(arguments).length
         type = typeof key
 
         // return `obj` without argument

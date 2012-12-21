@@ -22,7 +22,7 @@ function array(arr) {
         },
         push: function () {
             var
-            args = util.makeArray(arguments)
+            args = util.arrayify(arguments)
             Array.prototype.push.apply(arr, args)
             array.emit('push', args, arr)
             array.emit.apply(array, ['push'].concat(args.push(arr)).concat([arr]))
