@@ -4,7 +4,9 @@ pro = require('uglify-js').uglify,
 fs = require('fs'),
 path = require('path'),
 map = require('../src/map').map,
+set = require('../src/set').set,
 file = process.argv[2],
+originFiles = map(),
 deps = map([[file, false]]),
 combine = require('./combine'),
 deeps = map(),
@@ -35,10 +37,10 @@ function getDependence(file) {
     function getDependence(ast) {
         var _deps = []
         ast.forEach(function (item) {
-            var file
+            var file, originFile
             if (Object.prototype.toString.call(item) === '[object Array]') {
                 if (item[1] && item[1][1] === 'require') {
-                    file = item[2][0][1]
+                    originFile = file = item[2][0][1]
                     if (/\.\//.test(file)) {
                         if (!/\.js$/.test(file)) {
                             file += '.js'
@@ -48,6 +50,11 @@ function getDependence(file) {
                             _deps.push(file)
                         }
                         deeps.set(file, deep + 1)
+                        if (originFiles.has(file)) {
+                            originFiles.get(file).add(originFile)
+                        } else {
+                            originFiles.set(file, set([originFile]))
+                        }
                     }
                 }
                 _deps = _deps.concat(getDependence(item))
@@ -60,8 +67,7 @@ function getDependence(file) {
 
 function main() {
     var
-    _file, _deps,
-    files
+    _file, _deps, files
     while (!isFinished()) {
         _file = getUnFinishedFile()
         _deps = getDependence(_file)
@@ -72,20 +78,21 @@ function main() {
     }
     files = deeps.keys().map(function (key) {
         return {
-            file:key,
-            deep:deeps.get(key)
+            file: key,
+            deep: deeps.get(key)
         }
     }).sort(function (a, b) {
         return b.deep - a.deep
     }).map(function (file) {
+        file.origin = originFiles.get(file.file)
         return file
     })
 
     combine.combine(files, function (content) {
         console.log(content)
     })
-    
-}  
+
+}
 
 main()
 

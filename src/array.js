@@ -38,6 +38,12 @@ function array(arr) {
         }
     })
 
+    'map every some filter'.split(' ').forEach(function (method) {
+        array[method] = function  () {
+            return arr[method].apply(arr, arguments)
+        }
+    })
+
     util.extend(array, EventEmitter.prototype)
     return array
 

@@ -48,4 +48,3 @@ function set(iterable) {
 }
 
 exports.set = set
-
