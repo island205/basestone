@@ -1,0 +1,15 @@
+{
+  "author": "island205 <island205@gmail.com> (ZhiCun)",
+  "name": "basestone",
+  "description": "SMART DATASTRUCTURE",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/island205/basestone.git"
+  },
+  "main": "./src/basestone",
+  "engines": {
+    "node": "*"
+  }
+}
+
