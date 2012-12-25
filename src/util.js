@@ -1,3 +1,4 @@
+require('./lang/lang')
 var
 util = {},
 __slice = Array.prototype.slice,

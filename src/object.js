@@ -31,6 +31,12 @@ function object(obj) {
         }
     }
 
+    'keys'.split(' ').forEach(function (method) {
+        object[method] = function () {
+            return obj[method].apply(obj, arguments)
+        }
+    })
+
     util.extend(object, EventEmitter.prototype)
     return object
 }
