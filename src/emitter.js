@@ -1,6 +1,5 @@
 // if node
 // exports.EventEmitter = require('events').EventEmitter
-
 var
 __slice = Array.prototype.slice
 
@@ -23,15 +22,22 @@ proto.addEventListener = function (event, listener) {
         throw new Error('Listener can\'t more than ' + this.listeners.__maxListeners)
     }
     listeners.push(listener)
+    this.emit('newListener')
 }
 
 proto.on = proto.addEventListener
 
 proto.once = function (event, listener) {
     var
-    listeners = this.listeners(event)
-    listener.__once = true
-    listeners.push(listener)
+    once
+
+    once = function () {
+        this.removeALlListener(event, listener)
+        listener.apply(this, arguments)
+    }.bind(this)
+
+    once.__listener = listener
+    this.addEventListener(event, once)
 }
 
 proto.removeListener = function (event, listener) {
@@ -42,7 +48,7 @@ proto.removeListener = function (event, listener) {
     index = - 1
 
     for (i = 0, len = listeners.length; i < len; i++) {
-        if (listener === listeners[i]) {
+        if (listener === listeners[i] || listener === listeners[i].__listener) {
             index = i
             break
         }
@@ -71,7 +77,7 @@ proto.emit = function (event) {
     var
     args, listeners, i, len
 
-    listeners = this.listeners(event)
+    listeners = this.listeners(event).slice()
     args = []
 
     if (arguments.length > 1) {
@@ -80,7 +86,7 @@ proto.emit = function (event) {
     }
 
     for (i = 0, len = listeners.length; i < len; i++) {
-        listeners.apply(this, args)
+        listeners[i].apply(this, args)
     }
 }
 
