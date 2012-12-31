@@ -20,12 +20,17 @@ extend(util, {
             if (util.isArray(obj)) {
                 return obj.slice()
             } else {
-                return util.extend({}, obj)
+                return util.extend({},
+                obj)
             }
         }
     },
-    isArray: function (obj) {
-        return __toString.call(obj) === '[object Array]'
+    isArray: function (value) {
+        if (typeof Array.isArray === 'function') {
+            return Array.isArray(value);
+        } else {
+            return Object.prototype.toString.call(value) === '[object Array]';
+        }
     },
     arrayify: function (o) {
         return __slice.call(o)
@@ -33,3 +38,4 @@ extend(util, {
 })
 
 exports.util = util
+
