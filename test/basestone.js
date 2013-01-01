@@ -1,5 +1,6 @@
 var
-basestone = require('./src/basestone')
+basestone = require('./src/basestone'),
+util = require('./util').util
 
 var
 EventEmitter = basestone.EventEmitter
@@ -116,4 +117,74 @@ test('Event: \'newListener\'', 3, function () {
     this.emitter.on('nood', function () {})
 })
 
+var
+value = basestone.value
+module('value')
+test('', 7, function () {
+    var
+    val,
+    VAL = 646456
 
+    val = value()
+    strictEqual(val(), undefined, 'undefined')
+    val = value(undefined)
+    strictEqual(val(), undefined, 'undefined')
+    val = value(null)
+    strictEqual(val(), null, 'null')
+    val = value('')
+    strictEqual(val(), '', '')
+    val = value(0)
+    strictEqual(val(), 0, '0')
+
+    val = value()
+    val.on('change', function (val) {
+        equal(val, VAL, VAL)
+    })
+    val(VAL)
+    strictEqual(val(), VAL, VAL)
+})
+
+var
+object = basestone.object
+module('object')
+test('', 5, function () {
+    var
+    obj,
+    OBJ = {
+        email: 'island205@gmail.com',
+        age: 24,
+        working: function () {
+            console.log('pa,pa,pa coding')
+        }
+    }
+
+    obj = object()
+    deepEqual(obj(), {}, JSON.stringify({}))
+    obj = object(OBJ)
+    deepEqual(obj(), OBJ, JSON.stringify(OBJ))
+    equal(obj('age'), 24, 'age:24')
+    obj.on('change', function (obj) {
+        deepEqual(obj, util.extend(OBJ, {age: 25}))
+    })
+    obj.on('change:age', function (age) {
+        equal(age, 25, 'age:25')
+    })
+    obj('age', 25)
+})
+
+test('keys', function () {
+    var
+    obj,
+    OBJ = {
+        email: 'island205@gmail.com',
+        age: 24,
+        working: function () {
+            console.log('pa,pa,pa coding')
+        }
+    }
+
+    obj = object()
+    deepEqual(obj.keys(), [], '[]')
+    obj(OBJ)
+    deepEqual(obj.keys(), ['email', 'age', 'working'])
+})

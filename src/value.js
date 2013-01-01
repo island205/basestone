@@ -1,15 +1,15 @@
 var
 EventEmitter = require('./emitter').EventEmitter,
-util = require('./util').utii
+util = require('./util').util
 
-function value(val) {
-    val = val || undefined
+function value(initVal) {
+    // val = val || undefined
     function value(val) {
         if (typeof val === 'undefined') {
-            return val
+            return initVal
         } else {
-            val = val
-            value.emit('change', val)
+            initVal = val
+            value.emit('change', initVal)
         }
     }
     util.extend(value, EventEmitter.prototype)

@@ -735,16 +735,16 @@ void (function () {
     void (function (require, exports, module) {
         var
         EventEmitter = require('./emitter').EventEmitter,
-        util = require('./util').utii
+        util = require('./util').util
 
-        function value(val) {
-            val = val || undefined
+        function value(initVal) {
+            // val = val || undefined
             function value(val) {
                 if (typeof val === 'undefined') {
-                    return val
+                    return initVal
                 } else {
-                    val = val
-                    value.emit('change', val)
+                    initVal = val
+                    value.emit('change', initVal)
                 }
             }
             util.extend(value, EventEmitter.prototype)
@@ -781,23 +781,26 @@ void (function () {
                 // if type is `object`, extend `key` to `obj`
                 // otherwise set `obj` with `key` `value`
                 if (len === 0) {
-                    return obj
+                    return util.clone(obj)
                 } else if (len === 1) {
                     if (type === 'string') {
                         return obj[key]
                     } else {
-                        util.extend(obj, key)
-                        object.emit('change', obj)
+                        // util.extend(obj, key)
+                        Object.keys(key).forEach(function (k) {
+                            object(k, key[k])
+                        })
                     }
                 } else {
                     obj[key] = value
                     object.emit('change:' + key, value)
+                    object.emit('change', obj)
                 }
             }
 
             'keys'.split(' ').forEach(function (method) {
                 object[method] = function () {
-                    return obj[method].apply(obj, arguments)
+                    return Object[method].apply(Object, [obj])
                 }
             })
 
