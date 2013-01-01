@@ -34,6 +34,7 @@ function set(iterable) {
             if (UPDATE_METHOD.indexOf(method) > - 1) {
                 set.emit('update', st)
             }
+            return set
         }
     })
 

@@ -6,12 +6,13 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json')
     })
     grunt.task.registerTask('build', 'build basestone for web browser with noloader', function () {
-        exec('noloader ./src/basestone.js > ./build/basestone.js', function (err) {
+        exec('noloader ./src/basestone > ./build/basestone.js', function (err) {
             if (err) {
-                throw err
+                grunt.fail.fatal(err)
             } else {
                 grunt.log.writeln('build success')
             }
         })
     })
 }
+

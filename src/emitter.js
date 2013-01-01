@@ -1,4 +1,3 @@
-// if node
 // exports.EventEmitter = require('events').EventEmitter
 var
 __slice = Array.prototype.slice
@@ -13,12 +12,12 @@ proto.listeners = function (event) {
     listeners = this.__listeners = this.__listeners || {}
     listeners.__maxListeners = listeners.__maxListeners || 10
     listeners[event] = listeners[event] || []
-    return listeners
+    return listeners[event]
 }
 proto.addEventListener = function (event, listener) {
     var
     listeners = this.listeners(event)
-    if (listeners.length > this.listeners.__maxListeners) {
+    if (listeners.length !== 0 && listeners.length >= this.__listeners.__maxListeners) {
         throw new Error('Listener can\'t more than ' + this.listeners.__maxListeners)
     }
     listeners.push(listener)
@@ -32,7 +31,7 @@ proto.once = function (event, listener) {
     once
 
     once = function () {
-        this.removeALlListener(event, listener)
+        this.removeListener(event, listener)
         listener.apply(this, arguments)
     }.bind(this)
 
@@ -58,12 +57,12 @@ proto.removeListener = function (event, listener) {
     }
 }
 
-proto.removeALlListener = function (event) {
+proto.removeAllListeners = function (event) {
 
     if (typeof event === 'undefined') {
         this.__listeners = null
     } else {
-        if (typeof this.listeners[event] !== 'undefined') {
+        if (typeof this.__listeners[event] !== 'undefined') {
             this.__listeners[event] = null
         }
     }
@@ -91,4 +90,3 @@ proto.emit = function (event) {
 }
 
 exports.EventEmitter = EventEmitter
-

@@ -1,4 +1,5 @@
 var
+EventEmitter = require('./emitter').EventEmitter,
 value = require('./value').value,
 object = require('./object').object,
 array = require('./array').array,
@@ -10,6 +11,7 @@ structure = {
 }
 
 module.exports = {
+    EventEmitter: EventEmitter,
     value: value,
     object: object,
     array: array,
