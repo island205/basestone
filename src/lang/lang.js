@@ -116,6 +116,45 @@ if (!Array.prototype.indexOf) {
         return -1;
     }
 }
+
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/lastIndexOf
+if (!Array.prototype.lastIndexOf)
+{
+  Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/)
+  {
+    "use strict";
+
+    if (this == null)
+      throw new TypeError();
+
+    var t = Object(this);
+    var len = t.length >>> 0;
+    if (len === 0)
+      return -1;
+
+    var n = len;
+    if (arguments.length > 1)
+    {
+      n = Number(arguments[1]);
+      if (n != n)
+        n = 0;
+      else if (n != 0 && n != (1 / 0) && n != -(1 / 0))
+        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+    }
+
+    var k = n >= 0
+          ? Math.min(n, len - 1)
+          : len - Math.abs(n);
+
+    for (; k >= 0; k--)
+    {
+      if (k in t && t[k] === searchElement)
+        return k;
+    }
+    return -1;
+  };
+}
+
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
 // Production steps of ECMA-262, Edition 5, 15.4.4.19
 // Reference: http://es5.github.com/#x15.4.4.19
@@ -271,6 +310,85 @@ if (!Array.prototype.filter)
     }
  
     return res;
+  };
+}
+
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/Reduce
+if (!Array.prototype.reduce) {
+  Array.prototype.reduce = function reduce(accumulator){
+    if (this===null || this===undefined) throw new TypeError("Object is null or undefined");
+    var i = 0, l = this.length >> 0, curr;
+ 
+    if(typeof accumulator !== "function") // ES5 : "If IsCallable(callbackfn) is false, throw a TypeError exception."
+      throw new TypeError("First argument is not callable");
+ 
+    if(arguments.length < 2) {
+      if (l === 0) throw new TypeError("Array length is 0 and no second argument");
+      curr = this[0];
+      i = 1; // start accumulating at the second element
+    }
+    else
+      curr = arguments[1];
+ 
+    while (i < l) {
+      if(i in this) curr = accumulator.call(undefined, curr, this[i], i, this);
+      ++i;
+    }
+ 
+    return curr;
+  };
+}
+
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/ReduceRight
+if (!Array.prototype.reduceRight)
+{
+  Array.prototype.reduceRight = function(callbackfn /*, initialValue */)
+  {
+    "use strict";
+ 
+    if (this == null)
+      throw new TypeError();
+ 
+    var t = Object(this);
+    var len = t.length >>> 0;
+    if (typeof callbackfn != "function")
+      throw new TypeError();
+ 
+    // no value to return if no initial value, empty array
+    if (len === 0 && arguments.length === 1)
+      throw new TypeError();
+ 
+    var k = len - 1;
+    var accumulator;
+    if (arguments.length >= 2)
+    {
+      accumulator = arguments[1];
+    }
+    else
+    {
+      do
+      {
+        if (k in this)
+        {
+          accumulator = this[k--];
+          break;
+        }
+ 
+        // if array contains no values, no initial value to return
+        if (--k < 0)
+          throw new TypeError();
+      }
+      while (true);
+    }
+ 
+    while (k >= 0)
+    {
+      if (k in t)
+        accumulator = callbackfn.call(undefined, accumulator, t[k], k, t);
+      k--;
+    }
+ 
+    return accumulator;
   };
 }
 

@@ -188,3 +188,105 @@ test('keys', function () {
     obj(OBJ)
     deepEqual(obj.keys(), ['email', 'age', 'working'])
 })
+
+var
+array = basestone.array
+module('array')
+test('', function () {
+    var
+    arr
+    arr = array()
+    deepEqual(arr(), [], 'call array() without arguments')
+
+    arr = array([])
+    deepEqual(arr(), [], 'call array() with []')
+
+    arr = array([undefined, null, '', 1])
+    deepEqual(arr(), [undefined, null, '', 1], 'call array() with [undefined, null, \'\', 1]')
+    equal(arr(1), null, 'get second item')
+
+    arr([1, 1, 1, 1])
+    deepEqual(arr(), [1, 1, 1, 1], '')
+})
+
+test('Mutator mehod', 25, function () {
+    var
+    arr
+
+    arr = array()
+
+    function fNOP() {
+        ok(true, 'change event')
+    }
+
+    function onReset() {
+        ok(true, 'reset')
+    }
+    arr.on('change', fNOP)
+    'pop push reverse shift sort splice unshit'.split(' ').forEach(function (method) {
+        arr.on(method, function () {
+            ok(true, method + ' event')
+        })
+    })
+    deepEqual(arr(), [])
+
+    arr.push(1)
+    deepEqual(arr(), [1], 'push')
+    equal(arr.pop(), 1)
+    deepEqual(arr(), [], 'pop')
+
+    arr.push(1, 2, 3)
+    deepEqual(arr(), [1, 2, 3], 'push')
+    arr.reverse()
+    deepEqual(arr(), [3, 2, 1], 'reverse')
+    arr.sort(function (a, b) {
+        return a - b
+    })
+    deepEqual(arr(), [1, 2, 3], 'sort')
+    equal(arr.shift(), 1, 'shift')
+    arr.splice(0, 2, 1, 2, 3)
+    deepEqual(arr(), [1, 2, 3], 'splice')
+
+    arr.on('reset', onReset)
+
+    arr([])
+    deepEqual(arr(), [])
+})
+
+test('Accessor method', function () {
+    var
+    arr
+
+    arr = array()
+    deepEqual(arr = arr.concat([1, 2, 3]), [1, 2, 3], 'concat')
+    equal(arr.join(','), '1,2,3', 'join')
+    deepEqual(arr.slice(0, 2), [1, 2], 'slice')
+    equal(arr.indexOf(1), 0, 'indexOf')
+    equal(arr.lastIndexOf(3), 2, 'lastIndexOf')
+})
+
+test('Iteration method', function () {
+    var
+    arr
+
+    arr = array([1, 2, 3, 4, 5, 6, undefined, null])
+
+    arr.forEach(function (item) {
+        ok(arr.indexOf(item) > -1, 'forEach')
+    })
+
+    function filter(item) {
+        return typeof item === 'number'
+    }
+
+    function reduce(a, b) {
+        return a + b
+    }
+
+    ok(!arr.every(filter), 'every')
+    ok(arr.some(filter), 'some')
+    deepEqual(arr.filter(filter), [1, 2, 3, 4, 5, 6], 'filter')
+    deepEqual(arr.map(filter), [true, true, true, true, true, true, false, false], 'map')
+    equal(array(arr.filter(filter)).reduce(reduce), 21, 'reduce')
+    equal(array(arr.filter(filter)).reduceRight(reduce), 21, 'reduce')
+})

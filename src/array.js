@@ -2,45 +2,45 @@ var
 EventEmitter = require('./emitter').EventEmitter,
 util = require('./util').util
 
-function array(arr) {
-    arr = arr || []
+function array(initArr) {
+    initArr = initArr || []
 
     function array(arr) {
-        if (typeof arr !== 'undefined') {
-            arr = arr
-            array.emit('reset', arr)
-            return
+        if (arguments.length === 1) {
+            if (util.isArray(arr)) {
+                initArr = arr
+                array.emit('reset', initArr)
+            } else if (typeof arr === 'number') {
+                return initArr[arr]
+            }
+        } else {
+            return util.clone(initArr)
         }
     }
 
-    util.extend(array, {
-        pop: function () {
-            var
-            item = arr.pop()
-            array.emit('pop', item, arr)
-            return item
-        },
-        push: function () {
-            var
-            args = util.arrayify(arguments)
-            Array.prototype.push.apply(arr, args)
-            array.emit('push', args, arr)
-            array.emit.apply(array, ['push'].concat(args.push(arr)).concat([arr]))
-            return array.length
-        }
-    })
-
-    'sort reverse'.split(' ').forEach(function (method) {
+    // Mutator method https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array
+    'pop push reverse shift sort splice unshit'.split(' ').forEach(function (method) {
         array[method] = function () {
-            Array.prototype[method].apply(arr, arguments)
-            array.emit(method, arr)
-            return arr
+            var
+            args = util.arrayify(arguments),
+            ret = initArr[method].apply(initArr, args)
+            array.emit(method, args, initArr)
+            array.emit('change', args, initArr)
+            return ret
         }
     })
 
-    'map every some filter'.split(' ').forEach(function (method) {
-        array[method] = function  () {
-            return arr[method].apply(arr, arguments)
+    // Accessor https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array
+    'concat join slice indexOf lastIndexOf'.split(' ').forEach(function (method) {
+        array[method] = function () {
+            return initArr[method].apply(initArr, arguments)
+        }
+    })
+
+    // Iteration https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array
+    'forEach every some filter map reduce reduceRight'.split(' ').forEach(function (method) {
+        array[method] = function () {
+            return initArr[method].apply(initArr, arguments)
         }
     })
 
