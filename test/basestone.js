@@ -120,7 +120,7 @@ test('Event: \'newListener\'', 3, function () {
 var
 value = basestone.value
 module('value')
-test('', 7, function () {
+test('value()', 7, function () {
     var
     val,
     VAL = 646456
@@ -147,7 +147,7 @@ test('', 7, function () {
 var
 object = basestone.object
 module('object')
-test('', 5, function () {
+test('object()', 5, function () {
     var
     obj,
     OBJ = {
@@ -192,7 +192,7 @@ test('keys', function () {
 var
 array = basestone.array
 module('array')
-test('', function () {
+test('array()', function () {
     var
     arr
     arr = array()
@@ -289,4 +289,98 @@ test('Iteration method', function () {
     deepEqual(arr.map(filter), [true, true, true, true, true, true, false, false], 'map')
     equal(array(arr.filter(filter)).reduce(reduce), 21, 'reduce')
     equal(array(arr.filter(filter)).reduceRight(reduce), 21, 'reduce')
+})
+
+
+var
+map = basestone.map
+module('map')
+test('map()', function () {
+    var
+    mp
+
+    mp = map()
+    deepEqual(mp.keys(), [], '')
+    deepEqual(mp.values(), [], '')
+
+    mp = map([[null, null], [undefined, undefined], [0, 0], ['', '']])
+    deepEqual(mp.keys(), [null, undefined, 0, ''])
+    deepEqual(mp.values(), [null, undefined, 0, ''])
+
+    deepEqual(mp(), [[null, null], [undefined, undefined], [0, 0], ['', '']])
+
+    mp([[null, -1], [undefined, -1], [0, -1]])
+    deepEqual(mp(), [[null, -1], [undefined, -1], [0, -1], ['', '']])
+    equal(mp(null), -1)
+    equal(mp(undefined), -1)
+    equal(mp(''), '')
+})
+
+test('Motator method', function () {
+    var
+    mp
+
+    mp = map()
+
+    mp.set(undefined, undefined)
+    equal(mp.get(undefined), undefined, 'set')
+
+    mp.set(undefined, 'undefined')
+    equal(mp.get(undefined), 'undefined', 'set')
+
+    mp.remove(undefined)
+    equal(mp.get(undefined), undefined, 'remove')
+})
+
+test('Accessor Method', function () {
+    var
+    mp
+
+    mp = map([[null, null], [undefined, undefined], [0, 0], ['', '']])
+    equal(mp.get(null), null, 'get')
+    ok(mp.has(''), 'has')
+    deepEqual(mp.keys(), [null, undefined, 0, ''], 'keys')
+    deepEqual(mp.values(), [null, undefined, 0, ''], 'values')
+})
+
+test('Iterator method', 16, function () {
+    var
+    mp,
+    noop = [null, undefined, 0, '']
+    mp = map([[null, null], [undefined, undefined], [0, 0], ['', '']])
+
+    mp.items(function (key, value) {
+        ok(noop.indexOf(key) > -1, 'items')
+        ok(noop.indexOf(value) > -1, 'items')
+    })
+
+    mp.keys(function (key) {
+        ok(noop.indexOf(key) > -1, 'keys')
+    })
+    mp.values(function (value) {
+        ok(noop.indexOf(value) > -1, 'values')
+    })
+})
+
+test('event', 4, function () {
+    var
+    mp
+    mp = map([[null, null], [undefined, undefined], [0, 0], ['', '']])
+
+    mp.on('change', function (key, value) {
+        equal(key, null, 'change')
+        equal(key, undefined, 'change')
+    })
+
+    mp.on('change:null', function (value) {
+        equal(value, 'undefined', 'change:null')
+    })
+
+    mp.on('remove', function (key) {
+        equal(key, 0, 'remove')
+    })
+
+    mp.set(null, 'undefined')
+    mp.remove(0)
+    
 })
