@@ -384,3 +384,77 @@ test('event', 4, function () {
     mp.remove(0)
     
 })
+
+var
+set
+
+set = basestone.set
+module('set')
+test('set()', function () {
+    var
+    st
+
+    st = set()
+    deepEqual(st(), [], 'set()')
+
+    st = set([undefined, null, null, 0])
+    deepEqual(st(), [undefined, null, 0])
+
+    st(['', null, undefined, 0])
+    deepEqual(st(), [undefined, null, 0, ''])
+
+    st(' ')
+    deepEqual(st(), [undefined, null, 0, '', ' '])
+})
+
+test('Metator method', function () {
+    var
+    st
+
+    st = set()
+    st.add(undefined)
+    deepEqual(st(), [undefined], 'add')
+    st.remove(undefined)
+    deepEqual(st(), [], 'remove')
+})
+
+test('Accessor method', function () {
+    var
+    st
+
+    st = set()
+    st.add(undefined)
+    ok(st.has(undefined), 'has')
+    ok(!st.has(null), 'has')
+    st.add(null)
+    deepEqual(st.values(), [undefined, null], 'values')
+})
+
+test('Iterator method', 4, function () {
+    var
+    st,
+    values = [undefined, null, 0, '']
+    st = set()
+
+    st(values)
+
+    st.values(function (value) {
+        ok(values.indexOf(value) > -1, 'values')
+    })
+})
+
+test('event', 2, function () {
+    var
+    st
+
+    st = set()
+    st.on('add', function (value) {
+        equal(value, 'add', 'add')
+    })
+    st.on('remove', function (value) {
+        equal(value, 'add', 'remove')
+    })
+
+    st.add('add')
+    st.remove('add')
+})

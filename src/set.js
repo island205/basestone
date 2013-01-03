@@ -1,8 +1,7 @@
 var
 EventEmitter = require('./emitter').EventEmitter,
 Set = require('./structure/set').Set,
-util = require('./util').util,
-UPDATE_METHOD = 'add remove'.split(' ')
+util = require('./util').util
 
 function set(iterable) {
     var
@@ -10,14 +9,13 @@ function set(iterable) {
 
     function set(key) {
         var
-        len, type, iterable
+        len, iterable
         len = util.arrayify(arguments).length
-        type = typeof key
 
         if (len === 0) {
-            return st
+            return st.values()
         } else {
-            if (type === 'array') {
+            if (util.isArray(key)) {
                 iterable = key
                 iterable.forEach(function (item) {
                     set.add(item)
@@ -27,17 +25,19 @@ function set(iterable) {
             }
         }
     }
-
+    
+    // Metator method
     'add remove'.split(' ').forEach(function (method) {
-        set[method] = function () {
-            st[method].apply(st, arguments)
-            if (UPDATE_METHOD.indexOf(method) > - 1) {
-                set.emit('update', st)
-            }
-            return set
+        set[method] = function (value) {
+            var
+            ret
+            ret = st[method].apply(st, arguments)
+            set.emit(method, value)
+            return ret
         }
     })
 
+    // Accessor & Iterator method
     'has values'.split(' ').forEach(function (method) {
         set[method] = function () {
             return st[method].apply(st, arguments)
@@ -45,6 +45,7 @@ function set(iterable) {
     })
 
     util.extend(set, EventEmitter.prototype)
+
     return set
 }
 
