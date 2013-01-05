@@ -69,7 +69,7 @@ filesToRead.on('change', function () {
     }
 });
 filesToRead.keys(function (fileName) {
-    return fs.readFile(fileName, function (err, data) {
+    fs.readFile(fileName, function (err, data) {
         if (!err) {
             filesToRead.set(fileName, data);
         }
