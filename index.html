@@ -51,8 +51,9 @@
         <p>Basestone是一个JavaScript常用的数据结构集合，包含了ECMASCript 6 中出现的新特性，比如<code>Map</code>、<code>Set</code>等新的数据结构以及一些方便的方法（<code>keys</code>、<code>values</code>）等等。</p>
         <p>往往我们在处理一些较为复杂的业务逻辑时，从<code>UI binding</code>开始写起，很多业务逻辑都写在事件的回调函数之中，这往往会造成代码的冗余和逻辑混乱，Basestone目的就是提供一个具有事件特性的常用数据结构，来帮助前端工程师，把界面操作和业务逻辑解耦出来，相当于提供一个数据<code>Model</code>中间层。</p>
 
-<pre><code>var filesToRead, fs;
+<pre><code>var filesToRead, fs, basestone;
 fs = require('fs');
+basestone = require('basestone');
 filesToRead = basestone.map([
     ['./google.js', ''],
     ['./baidu.js', ''],
