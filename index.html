@@ -48,14 +48,36 @@
       <section id="main_content">
         <h3>欢迎使用Basestone</h3>
 
-        <p>Basestone是一个JavaScript常用的数据结构集合，包含了ECMASCript 6 中出现的新特性，比如`Map`、`Set`等新的数据结构以及一些方便的方法（`keys`、`values`）等等。</p>
-        <p>往往我们在处理一些较为复杂的业务逻辑时，从`UI binding`开始写起，很多业务逻辑都写在事件的回调函数之中，这往往会造成代码的冗余和逻辑混乱，Basestone目的就是提供一个具有事件特性的常用数据结构，来帮助前端工程师，把界面操作和业务逻辑解耦出来，相当于提供一个数据`Model`中间层。</p>
+        <p>Basestone是一个JavaScript常用的数据结构集合，包含了ECMASCript 6 中出现的新特性，比如<code>Map</code>、<code>Set</code>等新的数据结构以及一些方便的方法（<code>keys</code>、<code>values</code>）等等。</p>
+        <p>往往我们在处理一些较为复杂的业务逻辑时，从<code>UI binding</code>开始写起，很多业务逻辑都写在事件的回调函数之中，这往往会造成代码的冗余和逻辑混乱，Basestone目的就是提供一个具有事件特性的常用数据结构，来帮助前端工程师，把界面操作和业务逻辑解耦出来，相当于提供一个数据<code>Model</code>中间层。</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<pre><code>var filesToRead, fs;
+fs = require('fs');
+filesToRead = bastone.map([
+    ['./google.js', ''],
+    ['./baidu.js', ''],
+    ['./douban.js', '']
+]);
+filesToRead.on('change', function () {
+    var filesData, isAllReaded;
+    filesData = this.values();
+    isAllReaded = filesData.every(function (data) {
+        return data !== '';
+    });
+    if (isAllReaded) {
+        console.log(filesData.join('\n'));
+    }
+});
+filesToRead.keys(function (fileName) {
+    return fs.readFile(fileName, function (err, data) {
+        if (!err) {
+            filesToRead.set(fileName, data);
+        }
+    });
+});
 </code></pre>
 
+<!--
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
 <h3>Designer Templates</h3>
@@ -74,7 +96,7 @@ $ git checkout gh-pages
 
 <p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
-
+      -->
       <footer>
         <span class="ribbon-outer">
           <span class="ribbon-inner">
