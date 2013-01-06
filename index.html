@@ -48,9 +48,10 @@
       <section id="main_content">
         <h3>欢迎使用Basestone</h3>
 
-        <p>Basestone是一个JavaScript常用的数据结构集合，包含了ECMASCript 6 中出现的新特性，比如<code>Map</code>、<code>Set</code>等新的数据结构以及一些方便的方法（<code>keys</code>、<code>values</code>）等等。</p>
+        <p><code>Basestone</code>是一个JavaScript常用的数据结构集合，包含了ECMASCript 6 中出现的新特性，比如<code>Map</code>、<code>Set</code>等新的数据结构以及一些方便的方法（<code>keys</code>、<code>values</code>）等等。</p>
         <p>往往我们在处理一些较为复杂的业务逻辑时，从<code>UI binding</code>开始写起，很多业务逻辑都写在事件的回调函数之中，这往往会造成代码的冗余和逻辑混乱，Basestone目的就是提供一个具有事件特性的常用数据结构，来帮助前端工程师，把界面操作和业务逻辑解耦出来，相当于提供一个数据<code>Model</code>中间层。</p>
 
+<p>下面这段代码，展示了如何使用<code>Basestone</code>的<code>map</code>来异步地批量读取文件：</p>
 <pre><code>var filesToRead, fs, basestone;
 fs = require('fs');
 basestone = require('basestone');
@@ -59,13 +60,15 @@ filesToRead = basestone.map([
     ['./baidu.js', ''],
     ['./douban.js', '']
 ]);
-filesToRead.on('change', function () {
+filesToRead.on('change', function (key, value) {
     var filesData, isAllReaded;
+    console.log(key + ' is readed')
     filesData = this.values();
     isAllReaded = filesData.every(function (data) {
         return data !== '';
     });
     if (isAllReaded) {
+        console.log('all files are readed and combined:\n')
         console.log(filesData.join('\n'));
     }
 });
@@ -77,7 +80,7 @@ filesToRead.keys(function (fileName) {
     });
 });
 </code></pre>
-
+<p><code>Basestone</code>项目是按照<code>Node</code>的模块标准开发的，但它并不依赖于<code>Node</code>环境或者某些模块，我们可以在任何JS Context中使用它。在[build](https://github.com/island205/basestone/tree/master/build)有一些文件，我们使用[noloader](https://github.com/island205/noloader)打包成了多模块标准的包，大家可以结合<code>RequireJS</code>、<code>SeaJS</code>来使用它，或者直接在浏览器中使用。</p>
 <!--
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
