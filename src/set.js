@@ -33,6 +33,7 @@ function set(iterable) {
             ret
             ret = st[method].apply(st, arguments)
             set.emit(method, value)
+            set.emit('change', value)
             return ret
         }
     })

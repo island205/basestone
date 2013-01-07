@@ -443,7 +443,7 @@ test('Iterator method', 4, function () {
     })
 })
 
-test('event', 2, function () {
+test('event', 4, function () {
     var
     st
 
@@ -455,6 +455,9 @@ test('event', 2, function () {
         equal(value, 'add', 'remove')
     })
 
+    st.on('change', function (value) {
+        equal(value, 'add', 'change')
+    })
     st.add('add')
     st.remove('add')
 })
