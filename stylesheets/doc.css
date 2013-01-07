@@ -1,0 +1,15 @@
+.main_content {
+    width:100%;
+    margin-left:40px;
+}
+
+.sidebar {
+    width:190px;
+    position:fixed;
+    background-color:white;
+    top:0;
+    left:0;
+    height:100%;
+    padding:20px; 5px;
+    overflow-y: scroll;
+}
