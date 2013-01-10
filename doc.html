@@ -53,7 +53,6 @@ target.on('finish', finishHandler)
 
                 <h6 id="removeAllListeners">removeAllListeners([event])</h6>
                 <p>移除<code>event</code>下面所有监听器，如果没有传入<code>event</code>，移除所有的监听器。</p>
-            </section>
 
                 <h6 class="setMaxListeners">setMaxListeners(n)</h6>
                 <p>设置某个具体事件的最大监器个数，默认值为10。</p>
@@ -69,6 +68,48 @@ target.on('finish', finishHandler)
     console.log(time + ":finished")
 }
 target.emit('finish', Date.now)</code></pre>
+            </section>
+
+            <section id="value">
+                <h4>value</h4>
+                <p><code>value</code>可用来存储JavaScript中的基础类型数据，比如说<code>Number</code>、<code>String</code>等，可以对值进行修改，修改后会有相应的事件触发，可以提供<code>State</code>的功能。</p>
+                <h6 id="value-contructor">contructor</h6>
+                <p>可以用来构造一个<code>vlaue</code>，或者改变值。</p>
+                <pre><code>var
+step = backbone.value(1)
+// 改到步骤2
+step(2)
+// 回到步骤1
+step(1)
+
+var
+// st等于1
+st = step()</code></pre>
+
+
+                <h6 id="value-change">"change"</h6>
+                <p>值改变时，会触发<code>change</code>事件。可以把散落在各个UI事件回调中的业务逻辑放到Model的回调中，组织起来，没有重复的代码。</p>
+                <pre><code>step.on('change', function(st) {
+    if (st === 1) {
+        // 显示表单
+    } else if (st === 2) {
+        // 收起表单 显示结果
+    } else {
+        // 做点别的事
+    }
+})
+
+// 表单中的submit
+submit.on('click', function () {
+    // 业务处理，成功后
+    step(2)
+})
+
+back.on('click', function () {
+    // 返回修改表单
+    step(1)
+})</code></pre>
+            </section>
 
         </div>
         <div class="sidebar">
@@ -89,10 +130,10 @@ target.emit('finish', Date.now)</code></pre>
                 </ul>
                 </li>
                 <li>
-                <h4><a href="">value</a></h4>
+                <h4><a href="#value">value</a></h4>
                 <ul>
-                    <li><a href="">contructor</a></li>
-                    <li><a href="">"change"</a></li>
+                    <li><a href="#value-contructor">contructor</a></li>
+                    <li><a href="#value-change">"change"</a></li>
                 </ul>
                 </li>
                 <li>
