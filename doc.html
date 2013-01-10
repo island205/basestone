@@ -1,81 +1,149 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta name="viewport" content="width=640" />
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/doc.css" />
+        <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+        <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+        <link rel="stylesheet" href="stylesheets/doc.css" />
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-</head>
-<body>
-    <div class="main-content"></div>
-    <div class="sidebar">
-        <h1>Basestone</h1>
-        <ul>
-            <li>
-                <h2><a href="">EventEmitter</a></h2>
+        <script type="text/javascript" src="javascripts/modernizr.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="main-content">
+            <h3>欢迎使用Basestone</h3>
+
+            <p><code>Basestone</code>是一个JavaScript常用的数据结构集合，包含了ECMASCript 6 中出现的新特性，比如<code>Map</code>、<code>Set</code>等新的数据结构以及一些方便的方法（<code>keys</code>、<code>values</code>）等等。</p>
+            <p>往往我们在处理一些较为复杂的业务逻辑时，从<code>UI binding</code>开始写起，很多业务逻辑都写在事件的回调函数之中，这往往会造成代码的冗余和逻辑混乱，Basestone目的就是提供一个具有事件特性的常用数据结构，来帮助前端工程师，把界面操作和业务逻辑解耦出来，相当于提供一个数据<code>Model</code>中间层。</p>
+            <section id="EventEmitter">
+                <h4>EventEmitter</h4>
+                <p><code>EventEmitter</code>为<code>Basestone</code>提供了一个简洁事件模型，接口完全兼容<code>Node</code>的<code>event.EventEmitter</code>。也可单独使用。</p>
+
+                <pre><code>var target = {}
+basestone.util.extend(target, basestone.EventEmitter.prototype)
+// 现在 `target` 就可以绑定或触发事件了。</code></pre>
+
+                <h6 id="addListener">AddListener(event, listener)</h6>
+                <h6 id="on">on(event, listener)</h6>
+                <p>注册一个名为<code>event</code>的事件监听器，监听器会依照执行的顺序依次执行。</p>
+                <pre><code>// same as target.on
+target.addEventListener('finish', function () {
+    console.log("finished")
+})</code></pre>
+
+                <h6 id="once">once</h6>
+                <p>注册一个名为<code>event</code>的事件监听器，且该监听器只执行一次。</p>
+                <pre><code>target.once('done', function () {
+    console.log("task is done")
+})</code></pre>
+
+                <h6 id="removeListener">removeListener(event, listener)</h6>
+                <p>删除注册到<code>event</code>下面的事件监听器<code>listener</code></p>
+                <pre><code>// like target.once
+var
+finishHandler = function () {
+    console.log('task has finished')
+    target.removeListener('finish', finishHandler)
+}
+target.on('finish', finishHandler)
+</code></pre>
+
+                <h6 id="removeAllListeners">removeAllListeners([event])</h6>
+                <p>移除<code>event</code>下面所有监听器，如果没有传入<code>event</code>，移除所有的监听器。</p>
+            </section>
+
+                <h6 class="setMaxListeners">setMaxListeners(n)</h6>
+                <p>设置某个具体事件的最大监器个数，默认值为10。</p>
+
+
+                <h6 class="listeners">listeners(event)</h6>
+                <p>获取<code>event</code>下面的所有监听器。</p>
+
+
+                <h6 class="emit">emit(event, [arg1, [arg2] ...])</h6>
+                <p>触发事件<code>event</code>，可以传递一些参数。</p>
+                <pre><code>target.on('finish', function (time) {
+    console.log(time + ":finished")
+}
+target.emit('finish', Date.now)</code></pre>
+
+        </div>
+        <div class="sidebar">
+            <br />
+            <h1>Basestone <sub>v0.1.0</sub> </h1>
+            <ul>
+                <li>
+                <h4><a href="#EventEmitter">EventEmitter</a></h4>
                 <ul>
-                    <li><a href="">addEventListener</a></li>
-                    <li><a href="">on</a></li>
-                    <li><a href="">once</a></li>
-                    <li><a href="">removeListener</a></li>
-                    <li><a href="">removeAllListeners</a></li>
-                    <li><a href="">setMaxListeners</a></li>
-                    <li><a href="">listeners</a></li>
-                    <li><a href="">emit</a></li>
+                    <li><a href="#addListener">addListener</a></li>
+                    <li><a href="#on">on</a></li>
+                    <li><a href="#once">once</a></li>
+                    <li><a href="#removeListener">removeListener</a></li>
+                    <li><a href="#removeAllListeners">removeAllListeners</a></li>
+                    <li><a href="#setMaxListeners">setMaxListeners</a></li>
+                    <li><a href="#listeners">listeners</a></li>
+                    <li><a href="#emit">emit</a></li>
                 </ul>
-            </li>
-            <li>
-                <h2><a href="">value</a></h2>
+                </li>
+                <li>
+                <h4><a href="">value</a></h4>
                 <ul>
                     <li><a href="">contructor</a></li>
                     <li><a href="">"change"</a></li>
                 </ul>
-            </li>
-            <li>
-                <h2><a href="">object</a></h2>
+                </li>
+                <li>
+                <h4><a href="">object</a></h4>
                 <ul>
                     <li><a href="">contructor</a></li>
                     <li><a href="">keys</a></li>
                     <li><a href="">"change"</a></li>
                     <li><a href="">"change:key"</a></li>
                 </ul>
-            </li>
-            <li>
-                <h2><a href="">array</a></h2>
+                </li>
+                <li>
+                <h4><a href="">array</a></h4>
                 <ul>
                     <li><a href="">contructor</a></li>
                     <li><a href="">Array.prototpye</a></li>
-                    <li><a href="">"change"</a></li>
-                    <li><a href="">"method'change"</a></li>
+                    <li><a href="">"change" event</a></li>
+                    <li><a href="">[method] event</a></li>
                 </ul>
-            </li>
-            <li>
-                <h2><a href="">set</a></h2>
+                </li>
+                <li>
+                <h4><a href="">set</a></h4>
                 <ul>
                     <li><a href="">contructor</a></li>
                     <li><a href="">add</a></li>
                     <li><a href="">remove</a></li>
                     <li><a href="">has</a></li>
                     <li><a href="">values</a></li>
+                    <li><a href="">"add" event</a></li>
+                    <li><a href="">"remove" event</a></li>
+                    <li><a href="">"change" event</a></li>
                 </ul>
-            </li>
-            <li>
-                <h2><a href="">map</a></h2>
+                </li>
+                <li>
+                <h4><a href="">map</a></h4>
                 <ul>
                     <li><a href="">contructor</a></li>
-                    <li><a href="">add</a></li>
+                    <li><a href="">set</a></li>
                     <li><a href="">remove</a></li>
+                    <li><a href="">get</a></li>
                     <li><a href="">has</a></li>
+                    <li><a href="">keys</a></li>
                     <li><a href="">values</a></li>
+                    <li><a href="">"remove" event</a></li>
+                    <li><a href="">"change" event</a></li>
                 </ul>
-            </li>
-        </ul>
-    </div>
-</body>
+                </li>
+            </ul>
+            <br />
+            <br />
+            <br />
+        </div>
+    </body>
 </html>
