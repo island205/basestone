@@ -110,6 +110,110 @@ back.on('click', function () {
     step(1)
 })</code></pre>
             </section>
+            
+            <section>
+                <h4 id="object">object</h4>
+                <p>可以把<code>object</code>想象成JavaScript中Object对象的包装器，是用来管理一簇属性的，相当于Backbone中的Model类。属性值改变时，会触发相应的事件</p>
+
+                <h6 id="object-constructor">constructor</h6>
+                <pre><code>var task
+task = backbone.object({
+    content:'email to Mis',
+    createTime:'Thu Jan 10 2013 14:36:11 GMT+0800 (中国标准时间)'
+})
+// "email to Mis"
+task('content')
+
+task('content', 'email to Mr')
+
+// {content: 'email to Mr', createTime: 'Thu Jan 10 2013 14:36:11 GMT+0800 (中国标准时间)'}
+task()</code></pre>
+
+
+                <h6 id="object-keys">keys([iterator])</h6>
+                <p>返回一个数组，包含所有的<code>key</code>，如果传了<code>iterator</code>，就迭代每一个<code>key</code></p>
+                <pre><code>// ['content', 'createDate']
+task.keys()
+
+// email to Mr
+// Thu Jan 10 2013 14:36:11 GMT+0800 (中国标准时间)
+task.keys(function (key) {
+    console.log(task(key))
+})</code></pre>
+
+
+                <h6 id="object-change">"change"</h6>
+                <p>当属性的值变化时，会触发"<code>change</code>"事件。</p>
+                <pre><code>task.on('change', function () {
+    console.log('something changed')
+})
+task('content', 'email to Ms')</code></pre>
+
+
+                <h6 id="object-change-key">"change:key"</h6>
+                <p>可指定监听"<code>change</code>"事件的属性。</p>
+                <pre>task.on('change:createDate', function (val) {
+    console.log('Create Date change to ' + val)
+})
+task('createDate', new Date())<code></code></pre>
+            </section>
+
+            <section>
+                <h4 id="array">array</h4>
+                <p>可以把<code>array</code>想想成JavaSscript的Array对象的包装器，相当于Backbone中的Collection类，但没有那么强，用来管理一系列的项目。</p>
+
+
+                <h6 id="array-constructor">constructor</h6>
+                <p>可以传递一个数组作为初始化的项。</p>
+                <pre><code>var memo
+memo = basestone.array([task1, task2, task3])
+memo(0)                     // task1
+memo()                      // new Array containing task1, task2, task3
+memo([task4, task5, task6]) // or just reset it</code></pre>
+
+
+                <h6 id="array-prototype">Array.prototype</h6>
+                <p><code>memo</code>对象上包含所有Array上常用的一些原型方法，包括新标准中加入进来的，大致分成三类：</p>
+                <p>Mutator，即对内部有修改的方法：</p>
+                <ul>
+                    <li>pop</li>
+                    <li>push</li>
+                    <li>reverse</li>
+                    <li>shift</li>
+                    <li>sort</li>
+                    <li>splice</li>
+                    <li>unshit</li>
+                </ul>
+                <p>Accessor，即读取方法：</p>
+                <ul>
+                    <li>concat</li>
+                    <li>join</li>
+                    <li>slice</li>
+                    <li>indexOf</li>
+                    <li>lastIndexOf</li>
+                </ul>
+                <p>Iteration，迭代方法：</p>
+                <ul>
+                    <li>forEach</li>
+                    <li>every</li>
+                    <li>some</li>
+                    <li>filter</li>
+                    <li>map</li>
+                    <li>reduce</li>
+                    <li>reduceRight</li>
+                </ul>
+                <pre><code>var memo
+memo = basestone.array([task1, task2, task3])
+memo.pop() // task3
+memo(memo.concat([task4, task5])) // memo now is [task1, task2, task3, task4, task5]
+memo.forEach(function (task) {
+    task.done = true
+})
+var
+isDone = memo.every(function (task) {
+    return task.done === true
+})</code></pre>
+            </section>
 
         </div>
         <div class="sidebar">
@@ -137,21 +241,21 @@ back.on('click', function () {
                 </ul>
                 </li>
                 <li>
-                <h4><a href="">object</a></h4>
+                <h4><a href="#object">object</a></h4>
                 <ul>
-                    <li><a href="">contructor</a></li>
-                    <li><a href="">keys</a></li>
-                    <li><a href="">"change"</a></li>
-                    <li><a href="">"change:key"</a></li>
+                    <li><a href="#oject-contructor">contructor</a></li>
+                    <li><a href="#object-keys">keys</a></li>
+                    <li><a href="#object-change">"change"</a></li>
+                    <li><a href="#object-change-key">"change:key"</a></li>
                 </ul>
                 </li>
                 <li>
-                <h4><a href="">array</a></h4>
+                <h4><a href="#array">array</a></h4>
                 <ul>
-                    <li><a href="">contructor</a></li>
-                    <li><a href="">Array.prototpye</a></li>
-                    <li><a href="">"change" event</a></li>
-                    <li><a href="">[method] event</a></li>
+                    <li><a href="array-constructor">contructor</a></li>
+                    <li><a href="array-prototype">Array.prototpye</a></li>
+                    <li><a href="array-change-event">"change"</a></li>
+                    <li><a href="array-method-event">"[method]"</a></li>
                 </ul>
                 </li>
                 <li>
