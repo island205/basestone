@@ -213,6 +213,19 @@ var
 isDone = memo.every(function (task) {
     return task.done === true
 })</code></pre>
+
+
+                <h6 id="array-change-event">"change"</h6>
+                <p>当Mutator方法被调用时，会对内部进行修改，此时会触发<code>"change"</code>事件。</p>
+                <pre><code>memo.on('change', function () {
+    console.log('memo is changed')
+    // rerender UI by memo.forEach
+})</code></pre>
+
+
+                <h6 id="array-method-event">"[method]"</h6>
+                <p></p>
+                <pre><code></code></pre>
             </section>
 
         </div>
@@ -252,10 +265,10 @@ isDone = memo.every(function (task) {
                 <li>
                 <h4><a href="#array">array</a></h4>
                 <ul>
-                    <li><a href="array-constructor">contructor</a></li>
-                    <li><a href="array-prototype">Array.prototpye</a></li>
-                    <li><a href="array-change-event">"change"</a></li>
-                    <li><a href="array-method-event">"[method]"</a></li>
+                    <li><a href="#array-constructor">contructor</a></li>
+                    <li><a href="#array-prototype">Array.prototpye</a></li>
+                    <li><a href="#array-change-event">"change"</a></li>
+                    <li><a href="#array-method-event">"[method]"</a></li>
                 </ul>
                 </li>
                 <li>
