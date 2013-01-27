@@ -54,15 +54,15 @@ target.on('finish', finishHandler)
                 <h6 id="removeAllListeners">removeAllListeners([event])</h6>
                 <p>移除<code>event</code>下面所有监听器，如果没有传入<code>event</code>，移除所有的监听器。</p>
 
-                <h6 class="setMaxListeners">setMaxListeners(n)</h6>
+                <h6 id="setMaxListeners">setMaxListeners(n)</h6>
                 <p>设置某个具体事件的最大监器个数，默认值为10。</p>
 
 
-                <h6 class="listeners">listeners(event)</h6>
+                <h6 id="listeners">listeners(event)</h6>
                 <p>获取<code>event</code>下面的所有监听器。</p>
 
 
-                <h6 class="emit">emit(event, [arg1, [arg2] ...])</h6>
+                <h6 id="emit">emit(event, [arg1, [arg2] ...])</h6>
                 <p>触发事件<code>event</code>，可以传递一些参数。</p>
                 <pre><code>target.on('finish', function (time) {
     console.log(time + ":finished")
@@ -225,7 +225,149 @@ isDone = memo.every(function (task) {
 
                 <h6 id="array-method-event">"[method]"</h6>
                 <p>Mutator方法被调用时，会触发以相应方法名的事件。</p>
-                <pre><code></code></pre>
+                <pre><code>memo.on('push', function () {
+    // do something when there is item push in array
+})</code></pre>
+            </section>
+
+            <section>
+                <h4 id="set">set</h4>
+                <p><code>Set</code>作为<code>ECMAScript 6</code>草案新添加的数据结构，有其自身的特点和需要。可用来管理一组值，而不用关系这组值的类型和内容，且每个值都是唯一的。<code>set</code>即是对它的实现。</p>
+                <pre><code>var
+store
+store = basestone.set()
+
+store.add(null)
+store.add(undefined)
+store.add(1)
+// there are `null` `undefined` `1` in store
+
+store.add(undefined)
+// there are still `null` `undefined` `1` in store</code></pre>
+
+                <h6 id="set-contructor">contructor</h6>
+                <p>可传递一组初始值，初始值甚至可以是重复的，也可以什么都不传。</p>
+                <pre><code>var
+nameList
+nameList = basestone.set(['Devid', 'Lucy', 'Lily', 'Derek', 'Lucy'])
+// ['Devid', 'Lucy', 'Lily', 'Derek']
+console.log(nameList.values())</code></pre>
+
+                <h6 id="set-add">add</h6>
+                <p>把更多的值添加到`Set`中，可以添加已经存在的值，只是`Set`本身没什么变化。</p>
+                <pre><code>nameList.add('Island')
+nameList.add('Devid')
+// ['Devid', 'Lucy', 'Lily', 'Derek', 'Island']
+console.log(nameList.values())</code></pre>
+
+                <h6 id='set-remove'>remove</h6>
+                <p>删除`Set`中存在的项，返回`true`，如果不存在删除项，则返回`false`。</p>
+                <pre><code>nameList.remove('Island')
+// `false`
+console.log(nameList.remove('Man'))</code></pre>
+
+
+                <h6 id="set-has">has</h6>
+                <p>查看是否存在某个值。</p>
+                <pre><code>// true
+nameList.has('Devid')</code></pre>
+
+
+                <h6 id="set-values">values</h6>
+                <p>把所有的值作为一个数组返回，如果传入迭代器，则迭代所有的值。</p>
+                <pre><code>nameList.values(function (name) {
+    console.log(name + ' is here!')
+})</code></pre>
+
+                <h6 id="set-add-event">"add" event</h6>
+                <p>有新值加入进来时，会触发"add"事件。</p>
+                <pre><code>nameList.on('add', function (name) {
+    console.log(name + ' is added!')
+})
+// 'Rose is added!'
+nameList.add('Rose')</code></pre>
+                
+                <h6 id="set-remove-event">"remove" event</h6>
+                <p>删除值时会触发"remove"事件。</p>
+                <pre><code>nameList.on('remove', function (name) {
+    console.log(name + ' is removed!')
+})
+// 'Devid is removed!'
+nameList.remove('Devid')</code></pre>
+
+                <h6 id="set-change-event">"change" event</h6>
+                <p>不管是新增还是删除值，只要是对`Set`进行修改时，都会触发"change"事件。</p>
+                <pre><code>nameLiist.on('change', function () {
+    // rerender name list UI
+})</code></pre>
+            </section>
+
+            <section>
+                <h4 id="map">map</h4>
+                <p><code>ECMAScript 6</code>还引入了另外一种数据结构——<code>Map</code>，与<code>Object</code>的不同之处在于，<code>Map</code>可以使用任何值作为<code>key</code>，而<code>Object</code>只能使用字符串作为<code>key</code>。而这里的<code>map</code>就是对其实现。</p>
+
+                <h6 id="map-contructor">constructor</h6>
+                <p>可传递一个二维数组，初始化一个<code>map</code></p>
+                <pre><code>var
+mp
+mp = basestone.map([[undefined, undefined], [null, null], [document.body, document.body]])
+// undefined
+mp.get(undefined)
+// or just
+mp(undefined)</code></pre>
+
+                <h6 id="map-set">set</h6>
+                <p>添加或者修改某个键值对。</p>
+                <pre><code>mp.set(document.body, 'document.body')
+// 'document.body'
+mp.get(document.body)</code></pre>
+
+                <h6 id="map-remove">remove</h6>
+                <p>删除某个键值对。</p>
+                <pre><code>mp.remove(document.body)
+// undefined
+mp.get(document.body)</code></pre>
+
+                <h6 id="map-get">get</h6>
+                <p>获取值。</p>
+                <pre><code>// null
+mp.get(null)
+// or just
+mp(null)</code></pre>
+
+
+                <h6 id="map-has">has</h6>
+                <p>查看是否存在某个值。</p>
+                <pre><code>// false
+mp.has(document.body)</code></pre>
+
+
+                <h6 id="map-keys">keys</h6>
+                <p>把全部键作为一个数组返回，如果传递一个函数作为迭代器的话，会迭代每一个键。</p>
+                <pre><code>// [undefined, null]
+mp.keys()
+
+// or iterate them
+mp.keys(function (key) {
+    // do with key
+})</code></pre>
+
+                <h6 id="map-values">values</h6>
+                <p>与<code>keys</code>类似，不过迭代的是值。</p>
+                <pre><code>// [undefined, null]
+mp.values()
+
+// or
+mp.values(function (value) {
+    // do with value
+})</code></pre>
+
+                <h6 id="map-remove-event">"remove" event</h6>
+                <p>当删除键值对时，会出发该事件。</p>
+
+
+                <h6 id="map-change-event">"change" event</h6>
+                <p>当键值有改变时，会触发该事件。</p>
             </section>
 
         </div>
@@ -272,30 +414,30 @@ isDone = memo.every(function (task) {
                 </ul>
                 </li>
                 <li>
-                <h4><a href="">set</a></h4>
+                <h4><a href="#set">set</a></h4>
                 <ul>
-                    <li><a href="">contructor</a></li>
-                    <li><a href="">add</a></li>
-                    <li><a href="">remove</a></li>
-                    <li><a href="">has</a></li>
-                    <li><a href="">values</a></li>
-                    <li><a href="">"add" event</a></li>
-                    <li><a href="">"remove" event</a></li>
-                    <li><a href="">"change" event</a></li>
+                    <li><a href="#set-contructor">contructor</a></li>
+                    <li><a href="#set-add">add</a></li>
+                    <li><a href="#set-remove">remove</a></li>
+                    <li><a href="#set-has">has</a></li>
+                    <li><a href="#set-values">values</a></li>
+                    <li><a href="#set-add-event">"add" event</a></li>
+                    <li><a href="#set-remove-event">"remove" event</a></li>
+                    <li><a href="#set-change-event">"change" event</a></li>
                 </ul>
                 </li>
                 <li>
-                <h4><a href="">map</a></h4>
+                <h4><a href="#map">map</a></h4>
                 <ul>
-                    <li><a href="">contructor</a></li>
-                    <li><a href="">set</a></li>
-                    <li><a href="">remove</a></li>
-                    <li><a href="">get</a></li>
-                    <li><a href="">has</a></li>
-                    <li><a href="">keys</a></li>
-                    <li><a href="">values</a></li>
-                    <li><a href="">"remove" event</a></li>
-                    <li><a href="">"change" event</a></li>
+                    <li><a href="#map-contructor">contructor</a></li>
+                    <li><a href="#map-set">set</a></li>
+                    <li><a href="#map-remove">remove</a></li>
+                    <li><a href="#map-get">get</a></li>
+                    <li><a href="#map-has">has</a></li>
+                    <li><a href="#map-keys">keys</a></li>
+                    <li><a href="#map-values">values</a></li>
+                    <li><a href="#map-remove-event">"remove" event</a></li>
+                    <li><a href="#map-change-event">"change" event</a></li>
                 </ul>
                 </li>
             </ul>
