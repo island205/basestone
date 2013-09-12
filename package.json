@@ -11,6 +11,8 @@
   "engines": {
     "node": "*"
   },
+  "dependencies": {
+  },
   "devDependencies": {
     "grunt": "~0.3.17"
   }
